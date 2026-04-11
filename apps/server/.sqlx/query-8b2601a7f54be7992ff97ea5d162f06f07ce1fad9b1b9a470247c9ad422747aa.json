@@ -1,0 +1,150 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "SELECT id, household_id, person_id, title, description, color, start_at, end_at, is_all_day, created_at, updated_at\n               FROM family_center.local_activities\n               WHERE household_id = $1\n                 AND (\n                   (start_at IS NOT NULL AND start_at >= $2 AND start_at < $3)\n                   OR start_at IS NULL\n                 )",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "id",
+        "type_info": "Uuid",
+        "origin": {
+          "Table": {
+            "table": "family_center.local_activities",
+            "name": "id"
+          }
+        }
+      },
+      {
+        "ordinal": 1,
+        "name": "household_id",
+        "type_info": "Uuid",
+        "origin": {
+          "Table": {
+            "table": "family_center.local_activities",
+            "name": "household_id"
+          }
+        }
+      },
+      {
+        "ordinal": 2,
+        "name": "person_id",
+        "type_info": "Uuid",
+        "origin": {
+          "Table": {
+            "table": "family_center.local_activities",
+            "name": "person_id"
+          }
+        }
+      },
+      {
+        "ordinal": 3,
+        "name": "title",
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "family_center.local_activities",
+            "name": "title"
+          }
+        }
+      },
+      {
+        "ordinal": 4,
+        "name": "description",
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "family_center.local_activities",
+            "name": "description"
+          }
+        }
+      },
+      {
+        "ordinal": 5,
+        "name": "color",
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "family_center.local_activities",
+            "name": "color"
+          }
+        }
+      },
+      {
+        "ordinal": 6,
+        "name": "start_at",
+        "type_info": "Timestamptz",
+        "origin": {
+          "Table": {
+            "table": "family_center.local_activities",
+            "name": "start_at"
+          }
+        }
+      },
+      {
+        "ordinal": 7,
+        "name": "end_at",
+        "type_info": "Timestamptz",
+        "origin": {
+          "Table": {
+            "table": "family_center.local_activities",
+            "name": "end_at"
+          }
+        }
+      },
+      {
+        "ordinal": 8,
+        "name": "is_all_day",
+        "type_info": "Bool",
+        "origin": {
+          "Table": {
+            "table": "family_center.local_activities",
+            "name": "is_all_day"
+          }
+        }
+      },
+      {
+        "ordinal": 9,
+        "name": "created_at",
+        "type_info": "Timestamptz",
+        "origin": {
+          "Table": {
+            "table": "family_center.local_activities",
+            "name": "created_at"
+          }
+        }
+      },
+      {
+        "ordinal": 10,
+        "name": "updated_at",
+        "type_info": "Timestamptz",
+        "origin": {
+          "Table": {
+            "table": "family_center.local_activities",
+            "name": "updated_at"
+          }
+        }
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Uuid",
+        "Timestamptz",
+        "Timestamptz"
+      ]
+    },
+    "nullable": [
+      false,
+      false,
+      true,
+      false,
+      true,
+      true,
+      true,
+      true,
+      false,
+      false,
+      false
+    ]
+  },
+  "hash": "8b2601a7f54be7992ff97ea5d162f06f07ce1fad9b1b9a470247c9ad422747aa"
+}

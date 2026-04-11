@@ -1,0 +1,21 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "INSERT INTO family_center.merged_event_groups\n               (id, household_id, canonical_title, canonical_start, canonical_end, is_all_day, person_id, dupe_tier)\n               VALUES ($1, $2, $3, $4, $5, $6, $7, $8)",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": [
+        "Uuid",
+        "Uuid",
+        "Text",
+        "Timestamptz",
+        "Timestamptz",
+        "Bool",
+        "Uuid",
+        "Text"
+      ]
+    },
+    "nullable": []
+  },
+  "hash": "1c31385269c63e3f7d1ca0b9d68f785a16254cecb89480a4a463998bc1b1ada1"
+}

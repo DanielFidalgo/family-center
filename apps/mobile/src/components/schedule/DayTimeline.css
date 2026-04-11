@@ -1,0 +1,116 @@
+.day-timeline {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
+.day-timeline__headers {
+  display: flex;
+  flex-direction: row;
+  border-bottom: 1px solid var(--fc-border-color);
+  background: var(--fc-bg-card);
+  flex-shrink: 0;
+  height: 44px;
+}
+
+.day-timeline__time-gutter {
+  width: var(--fc-time-col-width);
+  flex-shrink: 0;
+  border-right: 1px solid var(--fc-border-color);
+}
+
+.day-timeline__col-header {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 10px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--fc-text-primary);
+  border-right: 1px solid var(--fc-border-color);
+}
+
+.day-timeline__col-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.day-timeline__scroll {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.day-timeline__grid {
+  display: flex;
+  flex-direction: row;
+  position: relative;
+}
+
+.day-timeline__time-col {
+  width: var(--fc-time-col-width);
+  flex-shrink: 0;
+  position: relative;
+  border-right: 1px solid var(--fc-border-color);
+}
+
+.day-timeline__time-label {
+  position: absolute;
+  font-size: 10px;
+  color: var(--fc-text-secondary);
+  right: 6px;
+  transform: translateY(-50%);
+  white-space: nowrap;
+}
+
+.day-timeline__lane-col {
+  flex: 1;
+  position: relative;
+  border-right: 1px solid var(--fc-border-color);
+}
+
+.day-timeline__hour-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  border-top: 1px solid var(--fc-border-color);
+  opacity: 0.4;
+}
+
+.day-timeline__event {
+  position: absolute;
+  left: 4px;
+  right: 4px;
+  background: var(--fc-bg-card);
+  border-radius: 4px;
+  padding: 4px 6px;
+  overflow: hidden;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+  transition: opacity 0.1s;
+}
+
+.day-timeline__event:active {
+  opacity: 0.8;
+}
+
+.day-timeline__event--activity {
+  background: rgba(80, 200, 120, 0.08);
+}
+
+.day-timeline__event-title {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--fc-text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.day-timeline__event-time {
+  font-size: 10px;
+  color: var(--fc-text-secondary);
+}

@@ -1,0 +1,16 @@
+name: family-center-server
+build:
+  command: cd apps/server && cargo build --release
+  output: apps/server/target/release/server
+run:
+  command: ./apps/server/target/release/server
+  port: 3000
+env:
+  - DATABASE_URL
+  - SERVER_PORT
+  - JWT_SECRET
+  - GOOGLE_CLIENT_ID
+  - GOOGLE_CLIENT_SECRET
+  - GOOGLE_REDIRECT_URI
+  - MOCK_CALENDAR
+  - RUST_LOG

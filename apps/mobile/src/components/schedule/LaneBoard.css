@@ -1,0 +1,8 @@
+.lane-board {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  background: var(--fc-bg-dark);
+}

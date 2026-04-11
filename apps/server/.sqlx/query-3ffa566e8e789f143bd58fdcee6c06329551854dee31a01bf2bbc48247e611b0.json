@@ -1,0 +1,14 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "DELETE FROM family_center.local_activity_recurrences WHERE local_activity_id = $1",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": [
+        "Uuid"
+      ]
+    },
+    "nullable": []
+  },
+  "hash": "3ffa566e8e789f143bd58fdcee6c06329551854dee31a01bf2bbc48247e611b0"
+}

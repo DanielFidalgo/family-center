@@ -1,0 +1,17 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "INSERT INTO family_center.calendar_sources (id, google_account_id, calendar_id, name, is_selected, access_role)\n               VALUES\n                 ($1, $2, 'mock-personal', 'Personal', TRUE, 'owner'),\n                 ($3, $2, 'mock-family', 'Family', TRUE, 'writer'),\n                 ($4, $2, 'mock-work', 'Work', FALSE, 'reader')\n               ON CONFLICT (google_account_id, calendar_id) DO NOTHING",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": [
+        "Uuid",
+        "Uuid",
+        "Uuid",
+        "Uuid"
+      ]
+    },
+    "nullable": []
+  },
+  "hash": "b5d6692e80ecb7d0a03c512364d475faa478ba7c65eca3129a54b1200f291ebb"
+}

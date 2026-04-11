@@ -1,0 +1,137 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "UPDATE family_center.calendar_sources SET is_selected = $2, updated_at = NOW() WHERE id = $1 RETURNING id, google_account_id, calendar_id, name, description, color_hex, is_selected, access_role, created_at, updated_at",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "id",
+        "type_info": "Uuid",
+        "origin": {
+          "Table": {
+            "table": "family_center.calendar_sources",
+            "name": "id"
+          }
+        }
+      },
+      {
+        "ordinal": 1,
+        "name": "google_account_id",
+        "type_info": "Uuid",
+        "origin": {
+          "Table": {
+            "table": "family_center.calendar_sources",
+            "name": "google_account_id"
+          }
+        }
+      },
+      {
+        "ordinal": 2,
+        "name": "calendar_id",
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "family_center.calendar_sources",
+            "name": "calendar_id"
+          }
+        }
+      },
+      {
+        "ordinal": 3,
+        "name": "name",
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "family_center.calendar_sources",
+            "name": "name"
+          }
+        }
+      },
+      {
+        "ordinal": 4,
+        "name": "description",
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "family_center.calendar_sources",
+            "name": "description"
+          }
+        }
+      },
+      {
+        "ordinal": 5,
+        "name": "color_hex",
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "family_center.calendar_sources",
+            "name": "color_hex"
+          }
+        }
+      },
+      {
+        "ordinal": 6,
+        "name": "is_selected",
+        "type_info": "Bool",
+        "origin": {
+          "Table": {
+            "table": "family_center.calendar_sources",
+            "name": "is_selected"
+          }
+        }
+      },
+      {
+        "ordinal": 7,
+        "name": "access_role",
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "family_center.calendar_sources",
+            "name": "access_role"
+          }
+        }
+      },
+      {
+        "ordinal": 8,
+        "name": "created_at",
+        "type_info": "Timestamptz",
+        "origin": {
+          "Table": {
+            "table": "family_center.calendar_sources",
+            "name": "created_at"
+          }
+        }
+      },
+      {
+        "ordinal": 9,
+        "name": "updated_at",
+        "type_info": "Timestamptz",
+        "origin": {
+          "Table": {
+            "table": "family_center.calendar_sources",
+            "name": "updated_at"
+          }
+        }
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Uuid",
+        "Bool"
+      ]
+    },
+    "nullable": [
+      false,
+      false,
+      false,
+      false,
+      true,
+      true,
+      false,
+      false,
+      false,
+      false
+    ]
+  },
+  "hash": "d93d34f78ae279ef8d2fed3df2528cb2e660ab4a17254873536322a8f5bca22d"
+}

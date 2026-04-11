@@ -1,0 +1,17 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "INSERT INTO family_center.merged_event_sources (id, merged_event_group_id, source_event_id, is_primary) VALUES ($1, $2, $3, $4)",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": [
+        "Uuid",
+        "Uuid",
+        "Uuid",
+        "Bool"
+      ]
+    },
+    "nullable": []
+  },
+  "hash": "b1d1f8deff06e8365efa6302d9b50e8229db15b19d768202f4f2ce851997bd2d"
+}

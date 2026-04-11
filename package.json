@@ -1,0 +1,21 @@
+{
+  "name": "family-center",
+  "private": true,
+  "workspaces": ["packages/*", "apps/mobile"],
+  "scripts": {
+    "install:all": "npm install",
+    "dev": "concurrently \"npm run dev:server\" \"npm run dev:mobile\"",
+    "dev:server": "cd apps/server && cargo run",
+    "dev:mobile": "cd apps/mobile && npm run dev",
+    "test": "npm run test:server && npm run test:mobile",
+    "test:server": "cd apps/server && cargo test",
+    "test:mobile": "cd apps/mobile && npm test",
+    "lint": "cd apps/mobile && npm run lint",
+    "typecheck": "cd apps/mobile && npm run typecheck && cd ../../packages/contracts && npm run typecheck",
+    "db:init": "bash scripts/init-db.sh",
+    "db:seed": "bash scripts/seed.sh"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}

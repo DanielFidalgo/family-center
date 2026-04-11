@@ -1,0 +1,36 @@
+# Dependencies
+.claude/
+node_modules/
+target/
+
+# Build outputs
+dist/
+build/
+.next/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Capacitor
+apps/mobile/android/
+apps/mobile/ios/
+
+# DB
+*.db
+*.db-shm
+*.db-wal
+
+# IDE
+.idea/
+.vscode/
+*.swp
+.DS_Store
+
+# Rust
+apps/server/target/
+.gitnexus
+CLAUDE.md
+AGENTS.md
+

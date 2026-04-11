@@ -1,0 +1,47 @@
+:root {
+  --fc-lane-height: 80px;
+  --fc-header-height: 56px;
+  --fc-time-col-width: 60px;
+  --fc-shared-lane-color: #7B68EE;
+  --fc-event-border-radius: 6px;
+  --fc-event-padding: 4px 8px;
+  --fc-font-size-event: 13px;
+  --fc-font-size-time: 12px;
+  --fc-bg-dark: #1a1a2e;
+  --fc-bg-card: #16213e;
+  --fc-text-primary: #e0e0e0;
+  --fc-text-secondary: #a0a0b0;
+  --fc-border-color: #2a2a4a;
+}
+
+body {
+  background: var(--fc-bg-dark);
+  color: var(--fc-text-primary);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  overflow: hidden; /* kiosk mode */
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+ion-app {
+  background: var(--fc-bg-dark);
+}
+
+/* Touch target minimum size for wall display */
+.touch-target {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+/* Kiosk-friendly scrollbar */
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--fc-border-color);
+  border-radius: 2px;
+}

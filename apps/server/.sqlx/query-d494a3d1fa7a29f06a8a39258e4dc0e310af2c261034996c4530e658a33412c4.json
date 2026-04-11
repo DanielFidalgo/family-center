@@ -1,0 +1,100 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "SELECT household_id, default_view, week_starts_monday, dedupe_mode, display_timezone, created_at, updated_at FROM family_center.settings WHERE household_id = $1",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "household_id",
+        "type_info": "Uuid",
+        "origin": {
+          "Table": {
+            "table": "family_center.settings",
+            "name": "household_id"
+          }
+        }
+      },
+      {
+        "ordinal": 1,
+        "name": "default_view",
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "family_center.settings",
+            "name": "default_view"
+          }
+        }
+      },
+      {
+        "ordinal": 2,
+        "name": "week_starts_monday",
+        "type_info": "Bool",
+        "origin": {
+          "Table": {
+            "table": "family_center.settings",
+            "name": "week_starts_monday"
+          }
+        }
+      },
+      {
+        "ordinal": 3,
+        "name": "dedupe_mode",
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "family_center.settings",
+            "name": "dedupe_mode"
+          }
+        }
+      },
+      {
+        "ordinal": 4,
+        "name": "display_timezone",
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "family_center.settings",
+            "name": "display_timezone"
+          }
+        }
+      },
+      {
+        "ordinal": 5,
+        "name": "created_at",
+        "type_info": "Timestamptz",
+        "origin": {
+          "Table": {
+            "table": "family_center.settings",
+            "name": "created_at"
+          }
+        }
+      },
+      {
+        "ordinal": 6,
+        "name": "updated_at",
+        "type_info": "Timestamptz",
+        "origin": {
+          "Table": {
+            "table": "family_center.settings",
+            "name": "updated_at"
+          }
+        }
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Uuid"
+      ]
+    },
+    "nullable": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ]
+  },
+  "hash": "d494a3d1fa7a29f06a8a39258e4dc0e310af2c261034996c4530e658a33412c4"
+}

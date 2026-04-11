@@ -1,0 +1,64 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "SELECT cs.id, cs.google_account_id, ga.access_token, ga.refresh_token FROM family_center.calendar_sources cs JOIN family_center.google_accounts ga ON cs.google_account_id = ga.id WHERE cs.id = ANY($1) AND cs.is_selected = TRUE",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "id",
+        "type_info": "Uuid",
+        "origin": {
+          "Table": {
+            "table": "family_center.calendar_sources",
+            "name": "id"
+          }
+        }
+      },
+      {
+        "ordinal": 1,
+        "name": "google_account_id",
+        "type_info": "Uuid",
+        "origin": {
+          "Table": {
+            "table": "family_center.calendar_sources",
+            "name": "google_account_id"
+          }
+        }
+      },
+      {
+        "ordinal": 2,
+        "name": "access_token",
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "family_center.google_accounts",
+            "name": "access_token"
+          }
+        }
+      },
+      {
+        "ordinal": 3,
+        "name": "refresh_token",
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "family_center.google_accounts",
+            "name": "refresh_token"
+          }
+        }
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "UuidArray"
+      ]
+    },
+    "nullable": [
+      false,
+      false,
+      true,
+      true
+    ]
+  },
+  "hash": "e2193ab07071548ecafb998365d413072a76f511152e6659bd33dffecf6f2831"
+}

@@ -1,0 +1,143 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "INSERT INTO family_center.local_activity_recurrences (id, local_activity_id, freq, interval_val, by_day_of_week, by_day_of_month, until, count)\n                       VALUES ($1, $2, $3, $4, $5, $6, $7::date, $8)\n                       ON CONFLICT (local_activity_id) DO UPDATE SET\n                           freq = EXCLUDED.freq,\n                           interval_val = EXCLUDED.interval_val,\n                           by_day_of_week = EXCLUDED.by_day_of_week,\n                           by_day_of_month = EXCLUDED.by_day_of_month,\n                           until = EXCLUDED.until,\n                           count = EXCLUDED.count,\n                           updated_at = NOW()\n                       RETURNING id, local_activity_id, freq, interval_val, by_day_of_week, by_day_of_month, until, count, created_at, updated_at",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "id",
+        "type_info": "Uuid",
+        "origin": {
+          "Table": {
+            "table": "family_center.local_activity_recurrences",
+            "name": "id"
+          }
+        }
+      },
+      {
+        "ordinal": 1,
+        "name": "local_activity_id",
+        "type_info": "Uuid",
+        "origin": {
+          "Table": {
+            "table": "family_center.local_activity_recurrences",
+            "name": "local_activity_id"
+          }
+        }
+      },
+      {
+        "ordinal": 2,
+        "name": "freq",
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "family_center.local_activity_recurrences",
+            "name": "freq"
+          }
+        }
+      },
+      {
+        "ordinal": 3,
+        "name": "interval_val",
+        "type_info": "Int4",
+        "origin": {
+          "Table": {
+            "table": "family_center.local_activity_recurrences",
+            "name": "interval_val"
+          }
+        }
+      },
+      {
+        "ordinal": 4,
+        "name": "by_day_of_week",
+        "type_info": "Int4Array",
+        "origin": {
+          "Table": {
+            "table": "family_center.local_activity_recurrences",
+            "name": "by_day_of_week"
+          }
+        }
+      },
+      {
+        "ordinal": 5,
+        "name": "by_day_of_month",
+        "type_info": "Int4Array",
+        "origin": {
+          "Table": {
+            "table": "family_center.local_activity_recurrences",
+            "name": "by_day_of_month"
+          }
+        }
+      },
+      {
+        "ordinal": 6,
+        "name": "until",
+        "type_info": "Date",
+        "origin": {
+          "Table": {
+            "table": "family_center.local_activity_recurrences",
+            "name": "until"
+          }
+        }
+      },
+      {
+        "ordinal": 7,
+        "name": "count",
+        "type_info": "Int4",
+        "origin": {
+          "Table": {
+            "table": "family_center.local_activity_recurrences",
+            "name": "count"
+          }
+        }
+      },
+      {
+        "ordinal": 8,
+        "name": "created_at",
+        "type_info": "Timestamptz",
+        "origin": {
+          "Table": {
+            "table": "family_center.local_activity_recurrences",
+            "name": "created_at"
+          }
+        }
+      },
+      {
+        "ordinal": 9,
+        "name": "updated_at",
+        "type_info": "Timestamptz",
+        "origin": {
+          "Table": {
+            "table": "family_center.local_activity_recurrences",
+            "name": "updated_at"
+          }
+        }
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Uuid",
+        "Uuid",
+        "Text",
+        "Int4",
+        "Int4Array",
+        "Int4Array",
+        "Date",
+        "Int4"
+      ]
+    },
+    "nullable": [
+      false,
+      false,
+      false,
+      false,
+      true,
+      true,
+      true,
+      true,
+      false,
+      false
+    ]
+  },
+  "hash": "b9e91de9a29c078b3f4b97ef6e4692ede5a4ac101a85d6f7451d09d36086c992"
+}
