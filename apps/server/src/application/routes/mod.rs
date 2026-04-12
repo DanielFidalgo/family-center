@@ -8,9 +8,14 @@ pub mod settings;
 pub mod sync;
 
 use crate::configuration::app_context::IAppContext;
-use poem::{IntoEndpoint, Route};
+use poem::{handler, IntoEndpoint, Route};
 use poem_openapi::OpenApiService;
 use std::sync::Arc;
+
+#[handler]
+fn health() -> &'static str {
+    "ok"
+}
 
 use activities::ActivitiesApi;
 use auth::AuthApi;
@@ -59,6 +64,8 @@ pub fn build_routes(context: Arc<dyn IAppContext>) -> Route {
     .server("/api");
 
     Route::new()
+        .at("/health", poem::get(health))
+        .at("/kaithheathcheck", poem::get(health))
         .nest("/docs", api_service.scalar())
         .nest("/openapi", api_service.spec_endpoint())
         .nest("/api", api_service.into_endpoint())
