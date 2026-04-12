@@ -4,7 +4,8 @@ use std::str::FromStr;
 
 pub async fn connect(database_url: &str) -> anyhow::Result<PgPool> {
     let opts = PgConnectOptions::from_str(database_url)?
-        .options([("search_path", "family_center")]);
+        .options([("search_path", "family_center")])
+        .statement_cache_capacity(0);
 
     let pool = PgPoolOptions::new()
         .max_connections(10)
