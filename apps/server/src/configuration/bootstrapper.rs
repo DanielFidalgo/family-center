@@ -32,10 +32,12 @@ pub async fn bootstrap() -> Result<(), ServiceError> {
     let config = Config::from_env().expect("Failed to load config");
     let pool = db::connect(&config.database_url).await.expect("Failed to connect to database");
 
-    sqlx::migrate!("./migrations")
-        .run(&pool)
-        .await
-        .expect("Failed to run migrations");
+    if std::env::var("RUN_MIGRATIONS").unwrap_or_default() == "true" {
+        sqlx::migrate!("./migrations")
+            .run(&pool)
+            .await
+            .expect("Failed to run migrations");
+    }
 
     let config: Arc<dyn IAppConfig> = Arc::new(config);
 
