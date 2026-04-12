@@ -1,6 +1,6 @@
 use std::{future::Future, pin::Pin};
 
-use poem::{EndpointExt, IntoEndpoint, middleware::Tracing};
+use poem::{EndpointExt, IntoEndpoint, middleware::Tracing, middleware::Cors};
 use thiserror::Error;
 use tokio::task::{JoinError, JoinHandle};
 
@@ -106,7 +106,7 @@ where
         port,
         routes,
     } = config;
-    let app = routes.into_endpoint().with(Tracing);
+    let app = routes.into_endpoint().with(Cors::new()).with(Tracing);
 
     tokio::spawn(async move {
         tracing::info!("Server is running on {}", service_url);

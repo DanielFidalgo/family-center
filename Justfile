@@ -104,3 +104,19 @@ sqlx-cache:
     cd {{server_dir}} && DATABASE_URL="{{local_db_url}}" cargo sqlx prepare
 
     echo "✓ .sqlx cache generated. Builds will now use offline mode."
+
+# ── Mobile ────────────────────────────────────────────────────────────────
+
+mobile_dir := "apps/mobile"
+
+# Build web assets, sync to Android, run on connected device
+android: mobile-build
+    cd {{mobile_dir}} && npx cap sync android && npx cap run android
+
+# Run mobile app locally in browser
+mobile-dev:
+    cd {{mobile_dir}} && npm run dev
+
+# Build the mobile web assets
+mobile-build:
+    cd {{mobile_dir}} && npm run build
