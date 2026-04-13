@@ -1,5 +1,6 @@
 import React from 'react';
 import type { Person, MergedEventGroup, LocalActivity } from '@family-center/contracts';
+import Avatar from '../Avatar';
 import EventCard from './EventCard';
 import './PersonLane.css';
 
@@ -42,9 +43,11 @@ const PersonLane: React.FC<Props> = ({
   return (
     <div className="person-lane">
       <div className="person-lane__header" style={{ borderLeft: `3px solid ${laneColor}` }}>
-        <span
-          className="person-lane__dot"
-          style={{ background: laneColor }}
+        <Avatar
+          name={laneName}
+          color={laneColor}
+          avatarUrl={person?.avatarUrl}
+          size={24}
         />
         <span className="person-lane__name">{laneName}</span>
         <span className="person-lane__count">{allItems.length}</span>

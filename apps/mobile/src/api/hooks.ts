@@ -3,9 +3,11 @@ import { api } from './client';
 import type {
   Person, CreatePersonRequest, UpdatePersonRequest,
   GoogleAccountPublic, CalendarSource,
-  LocalActivity, CreateActivityRequest, UpdateActivityRequest,
+  LocalActivity, CreateActivityRequest, UpdateActivityRequest, CompleteActivityRequest, ActivityCompletion,
   Settings, UpdateSettingsRequest,
   ScheduleResponse, SyncRunRequest, SyncRunResponse,
+  LaneAssignmentRule, LinkAccountRequest, UnlinkAccountRequest,
+  LinkResult, UnlinkResult,
 } from '@family-center/contracts';
 
 // ---- People ----
@@ -127,5 +129,56 @@ export function useRunSync() {
 export function useConnectGoogleStart() {
   return useMutation({
     mutationFn: () => api.post<{ authUrl: string; state: string }>('/google/connect/start'),
+  });
+}
+
+// ---- Activity Completions ----
+export function useCompleteActivity() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, ...body }: CompleteActivityRequest & { id: string }) =>
+      api.post<ActivityCompletion>(`/activities/${id}/complete`, body),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ['schedule'] });
+    },
+  });
+}
+
+export function useUncompleteActivity() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, ...body }: CompleteActivityRequest & { id: string }) =>
+      api.post<ActivityCompletion[]>(`/activities/${id}/uncomplete`, body),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ['schedule'] });
+    },
+  });
+}
+
+// ---- Lane Assignment Rules ----
+export const LANE_RULES_KEY = ['lane-rules'] as const;
+
+export function useLaneRules() {
+  return useQuery({
+    queryKey: LANE_RULES_KEY,
+    queryFn: () => api.get<LaneAssignmentRule[]>('/lane-rules'),
+  });
+}
+
+export function useLinkAccount() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (body: LinkAccountRequest) =>
+      api.post<LinkResult>('/lane-rules/link-account', body),
+    onSuccess: () => qc.invalidateQueries({ queryKey: LANE_RULES_KEY }),
+  });
+}
+
+export function useUnlinkAccount() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (body: UnlinkAccountRequest) =>
+      api.post<UnlinkResult>('/lane-rules/unlink-account', body),
+    onSuccess: () => qc.invalidateQueries({ queryKey: LANE_RULES_KEY }),
   });
 }

@@ -15,6 +15,8 @@ pub struct LocalActivity {
     pub start_at: Option<DateTime<Utc>>,
     pub end_at: Option<DateTime<Utc>>,
     pub is_all_day: bool,
+    pub category: Option<String>,
+    pub is_time_bound: bool,
     pub created_at: DateTime<Utc>,
     pub updated_at: DateTime<Utc>,
 }
@@ -34,8 +36,17 @@ pub struct LocalActivityRecurrence {
     pub updated_at: DateTime<Utc>,
 }
 
+#[derive(Debug, Clone, Serialize, Deserialize, Object)]
+#[serde(rename_all = "camelCase")]
+pub struct ActivityCompletion {
+    pub id: Uuid,
+    pub local_activity_id: Uuid,
+    pub completed_date: NaiveDate,
+    pub completed_by: Option<Uuid>,
+    pub created_at: DateTime<Utc>,
+}
+
 /// Flattened version for poem_openapi::Object (no serde flatten supported).
-/// LocalActivity fields are inlined alongside recurrence.
 #[derive(Debug, Clone, Serialize, Deserialize, Object)]
 #[serde(rename_all = "camelCase")]
 pub struct LocalActivityWithRecurrence {
@@ -48,6 +59,8 @@ pub struct LocalActivityWithRecurrence {
     pub start_at: Option<DateTime<Utc>>,
     pub end_at: Option<DateTime<Utc>>,
     pub is_all_day: bool,
+    pub category: Option<String>,
+    pub is_time_bound: bool,
     pub created_at: DateTime<Utc>,
     pub updated_at: DateTime<Utc>,
     pub recurrence: Option<LocalActivityRecurrence>,
@@ -65,6 +78,8 @@ impl LocalActivityWithRecurrence {
             start_at: activity.start_at,
             end_at: activity.end_at,
             is_all_day: activity.is_all_day,
+            category: activity.category,
+            is_time_bound: activity.is_time_bound,
             created_at: activity.created_at,
             updated_at: activity.updated_at,
             recurrence,
@@ -93,6 +108,8 @@ pub struct CreateLocalActivity {
     pub start_at: Option<DateTime<Utc>>,
     pub end_at: Option<DateTime<Utc>>,
     pub is_all_day: Option<bool>,
+    pub category: Option<String>,
+    pub is_time_bound: Option<bool>,
     pub recurrence: Option<RecurrenceInput>,
 }
 
@@ -106,5 +123,14 @@ pub struct UpdateLocalActivity {
     pub start_at: Option<Option<DateTime<Utc>>>,
     pub end_at: Option<Option<DateTime<Utc>>>,
     pub is_all_day: Option<bool>,
+    pub category: Option<Option<String>>,
+    pub is_time_bound: Option<bool>,
     pub recurrence: Option<Option<RecurrenceInput>>,
+}
+
+#[derive(Debug, Deserialize, Object)]
+#[serde(rename_all = "camelCase")]
+pub struct CompleteActivityRequest {
+    pub date: String,
+    pub completed_by: Option<Uuid>,
 }

@@ -1,71 +1,236 @@
-.week-board {
-  display: flex;
-  flex-direction: row;
-  height: 100%;
-  overflow-x: auto;
-  background: var(--fc-bg-dark);
-}
+/* Week Swim-lane Board — portrait (days as rows, lanes as columns) */
 
-.week-board__day {
-  flex: 1;
-  min-width: 140px;
+.wsw {
   display: flex;
   flex-direction: column;
-  border-right: 1px solid var(--fc-border-color);
-  cursor: pointer;
-  transition: background 0.1s;
+  height: 100%;
+  overflow: hidden;
+  background: var(--fc-bg);
 }
 
-.week-board__day:active {
-  background: rgba(255,255,255,0.03);
+/* ─── Sticky header ─── */
+.wsw__head {
+  display: flex;
+  flex-direction: row;
+  flex-shrink: 0;
+  background: var(--fc-bg-surface);
+  border-bottom: 1px solid var(--fc-border-strong);
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
 
-.week-board__day--today {
-  background: rgba(74, 144, 217, 0.04);
+.wsw__corner {
+  width: 62px;
+  flex-shrink: 0;
+  border-right: 1px solid var(--fc-border);
 }
 
-.week-board__day-header {
+.wsw__lane-head {
+  flex: 1;
+  min-width: 0;
   display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 8px 10px;
-  border-bottom: 2px solid var(--fc-border-color);
-  background: var(--fc-bg-card);
-  min-height: 44px;
+  gap: 5px;
+  padding: 8px 8px 10px;
+  border-right: 1px solid var(--fc-border);
+}
+
+.wsw__lane-head:last-child {
+  border-right: none;
+}
+
+.wsw__lane-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
   flex-shrink: 0;
 }
 
-.week-board__day-header--today {
-  border-bottom-color: #4A90D9;
-}
-
-.week-board__day-name {
+.wsw__lane-name {
+  font-family: var(--fc-font-display);
   font-size: 12px;
-  color: var(--fc-text-secondary);
-  font-weight: 500;
-  text-transform: uppercase;
-}
-
-.week-board__day-num {
-  font-size: 18px;
   font-weight: 700;
   color: var(--fc-text-primary);
-}
-
-.week-board__day--today .week-board__day-num {
-  color: #4A90D9;
-}
-
-.week-board__day-count {
-  margin-left: auto;
-  font-size: 11px;
-  color: var(--fc-text-secondary);
-  background: rgba(255,255,255,0.06);
-  border-radius: 10px;
-  padding: 1px 6px;
-}
-
-.week-board__day-lanes {
-  flex: 1;
+  white-space: nowrap;
   overflow: hidden;
+  text-overflow: ellipsis;
+  letter-spacing: 0.01em;
+}
+
+/* ─── Scrollable body ─── */
+.wsw__body {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* ─── Day row ─── */
+.wsw__row {
+  display: flex;
+  flex-direction: row;
+  border-bottom: 1px solid var(--fc-border);
+  min-height: 64px;
+  animation: fc-fade-up 0.2s ease both;
+}
+
+.wsw__row--today {
+  background: rgba(245, 166, 35, 0.04);
+}
+
+.wsw__row--weekend {
+  background: rgba(255, 255, 255, 0.015);
+}
+
+/* ─── Day label column ─── */
+.wsw__day-label {
+  width: 62px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  background: none;
+  border: none;
+  border-right: 1px solid var(--fc-border);
+  cursor: pointer;
+  padding: 10px 4px;
+  text-decoration: none;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: background 0.15s;
+}
+
+.wsw__day-label:active {
+  background: rgba(255,255,255,0.04);
+}
+
+.wsw__day-label--today::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--fc-accent);
+  border-radius: 0 2px 2px 0;
+}
+
+.wsw__day-label {
+  position: relative;
+}
+
+.wsw__day-name {
+  font-family: var(--fc-font-body);
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--fc-text-secondary);
+}
+
+.wsw__day-num {
+  font-family: var(--fc-font-display);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--fc-text-primary);
+  line-height: 1;
+}
+
+.wsw__day-num--today {
+  color: var(--fc-accent);
+}
+
+/* ─── Lane cell ─── */
+.wsw__cell {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 5px 5px 5px 6px;
+  border-right: 1px solid var(--fc-border);
+}
+
+.wsw__cell:last-child {
+  border-right: none;
+}
+
+.wsw__cell--empty {
+  background: transparent;
+}
+
+/* ─── Event chip ─── */
+.wsw__chip {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  background: var(--fc-bg-card);
+  border: none;
+  border-left: 3px solid var(--lane-color, var(--fc-blue));
+  border-radius: 4px;
+  padding: 4px 6px;
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
+  min-height: 28px;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: background 0.12s, transform 0.1s;
+  animation: fc-fade-up 0.2s ease both;
+}
+
+.wsw__chip:active {
+  background: var(--fc-bg-elevated);
+  transform: scale(0.98);
+}
+
+.wsw__chip--activity {
+  background: var(--fc-bg-elevated);
+}
+
+.wsw__chip-time {
+  font-family: var(--fc-font-body);
+  font-size: 10px;
+  color: var(--fc-text-muted);
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.wsw__chip-title {
+  font-family: var(--fc-font-body);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--fc-text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1;
+  min-width: 0;
+}
+
+.wsw__chip-badge {
+  font-size: 10px;
+  color: var(--fc-green);
+  flex-shrink: 0;
+}
+
+.wsw__chip--done {
+  opacity: 0.65;
+  background: var(--fc-green-dim, #d4f5e2);
+}
+
+.wsw__chip-title--done {
+  text-decoration: line-through;
+  opacity: 0.7;
+}
+
+.wsw__chip-done-label {
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: var(--fc-green, #22c55e);
+  flex-shrink: 0;
+  text-transform: uppercase;
 }

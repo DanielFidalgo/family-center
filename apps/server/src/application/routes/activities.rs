@@ -1,10 +1,12 @@
 use std::sync::Arc;
+use chrono::NaiveDate;
 use poem_openapi::{OpenApi, param::Path, payload::Json};
 use uuid::Uuid;
 use crate::application::routes::security::{ApiError, ApiTags, BearerAuth};
 use crate::configuration::app_context::IAppContext;
 use crate::domain::entities::local_activity::{
-    CreateLocalActivity, LocalActivityWithRecurrence, UpdateLocalActivity,
+    ActivityCompletion, CompleteActivityRequest, CreateLocalActivity,
+    LocalActivityWithRecurrence, UpdateLocalActivity,
 };
 use crate::infrastructure::auth;
 
@@ -83,5 +85,47 @@ impl ActivitiesApi {
             .map_err(ApiError::from)?;
 
         Ok(Json(activity))
+    }
+
+    /// Mark an activity as completed for a specific date.
+    #[oai(path = "/activities/:id/complete", method = "post")]
+    pub async fn complete_activity(
+        &self,
+        auth: BearerAuth,
+        id: Path<Uuid>,
+        body: Json<CompleteActivityRequest>,
+    ) -> Result<Json<ActivityCompletion>, ApiError> {
+        self.verify(&auth)?;
+
+        let date = NaiveDate::parse_from_str(&body.date, "%Y-%m-%d")
+            .map_err(|_| ApiError::bad_request("date must be YYYY-MM-DD"))?;
+
+        let completion = self.context.local_activity_repository()
+            .complete_activity(id.0, date, body.completed_by)
+            .await
+            .map_err(ApiError::from)?;
+
+        Ok(Json(completion))
+    }
+
+    /// Unmark an activity as completed for a specific date.
+    #[oai(path = "/activities/:id/uncomplete", method = "post")]
+    pub async fn uncomplete_activity(
+        &self,
+        auth: BearerAuth,
+        id: Path<Uuid>,
+        body: Json<CompleteActivityRequest>,
+    ) -> Result<Json<Vec<ActivityCompletion>>, ApiError> {
+        self.verify(&auth)?;
+
+        let date = NaiveDate::parse_from_str(&body.date, "%Y-%m-%d")
+            .map_err(|_| ApiError::bad_request("date must be YYYY-MM-DD"))?;
+
+        self.context.local_activity_repository()
+            .uncomplete_activity(id.0, date)
+            .await
+            .map_err(ApiError::from)?;
+
+        Ok(Json(vec![]))
     }
 }

@@ -21,6 +21,8 @@ pub enum ApiTags {
     Activities,
     /// Household settings
     Settings,
+    /// Lane assignment rules
+    Lanes,
 }
 use serde::{Deserialize, Serialize};
 

@@ -11,3 +11,21 @@ export interface LaneAssignmentRule extends Timestamps {
   laneTarget: LaneTarget;
   priority: number;          // lower = higher priority
 }
+
+export interface LinkAccountRequest {
+  googleAccountId: UUID;
+  personId?: UUID;           // null = shared lane
+}
+
+export interface UnlinkAccountRequest {
+  googleAccountId: UUID;
+  personId?: UUID;           // null = shared lane
+}
+
+export interface LinkResult {
+  rulesCreated: number;
+}
+
+export interface UnlinkResult {
+  rulesDeleted: number;
+}

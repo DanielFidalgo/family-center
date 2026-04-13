@@ -1,6 +1,7 @@
 pub mod activities;
 pub mod auth;
 pub mod google;
+pub mod lanes;
 pub mod people;
 pub mod schedule;
 pub mod security;
@@ -20,6 +21,7 @@ fn health() -> &'static str {
 use activities::ActivitiesApi;
 use auth::AuthApi;
 use google::GoogleApi;
+use lanes::LanesApi;
 use people::PeopleApi;
 use schedule::ScheduleApi;
 use settings::SettingsApi;
@@ -47,6 +49,9 @@ pub fn build_routes(context: Arc<dyn IAppContext>) -> Route {
     let settings_api = SettingsApi {
         context: context.clone(),
     };
+    let lanes_api = LanesApi {
+        context: context.clone(),
+    };
 
     let api_service = OpenApiService::new(
         (
@@ -57,6 +62,7 @@ pub fn build_routes(context: Arc<dyn IAppContext>) -> Route {
             people_api,
             activities_api,
             settings_api,
+            lanes_api,
         ),
         "Family Center API",
         "1.0.0",

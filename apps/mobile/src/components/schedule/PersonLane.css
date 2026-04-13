@@ -1,55 +1,59 @@
 .person-lane {
   display: flex;
   flex-direction: column;
-  min-width: 160px;
-  flex: 1;
-  border-right: 1px solid var(--fc-border-color);
+  border-bottom: 1px solid var(--fc-border);
+  animation: fc-fade-up 0.2s ease both;
 }
 
 .person-lane__header {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 8px 10px;
-  background: var(--fc-bg-card);
-  border-bottom: 1px solid var(--fc-border-color);
-  min-height: 44px;
+  padding: 8px 12px;
+  background: var(--fc-bg-surface);
+  border-bottom: 1px solid var(--fc-border);
+  min-height: 40px;
+  flex-shrink: 0;
 }
 
 .person-lane__dot {
-  width: 10px;
-  height: 10px;
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
   flex-shrink: 0;
 }
 
 .person-lane__name {
-  font-size: 14px;
-  font-weight: 600;
+  font-family: var(--fc-font-display);
+  font-size: 13px;
+  font-weight: 700;
   color: var(--fc-text-primary);
   flex: 1;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  letter-spacing: 0.01em;
 }
 
 .person-lane__count {
+  font-family: var(--fc-font-body);
   font-size: 11px;
-  color: var(--fc-text-secondary);
-  background: rgba(255,255,255,0.06);
+  color: var(--fc-text-muted);
+  background: var(--fc-bg-card);
   border-radius: 10px;
-  padding: 1px 6px;
+  padding: 1px 7px;
+  font-weight: 500;
 }
 
 .person-lane__events {
-  flex: 1;
-  overflow-y: auto;
-  padding: 4px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 4px 8px 6px;
+  background: var(--fc-bg);
 }
 
 .person-lane__empty {
-  padding: 16px 10px;
+  font-family: var(--fc-font-body);
   font-size: 12px;
-  color: var(--fc-text-secondary);
-  text-align: center;
+  color: var(--fc-text-muted);
+  padding: 10px 4px;
+  font-style: italic;
 }

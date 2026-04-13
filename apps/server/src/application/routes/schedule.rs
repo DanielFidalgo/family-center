@@ -6,7 +6,7 @@ use uuid::Uuid;
 use crate::application::routes::security::{ApiError, ApiTags};
 use crate::configuration::app_context::IAppContext;
 use crate::domain::entities::{
-    local_activity::LocalActivityWithRecurrence,
+    local_activity::{ActivityCompletion, LocalActivityWithRecurrence},
     merged_event::MergedEventGroupWithSources,
 };
 
@@ -15,6 +15,7 @@ use crate::domain::entities::{
 pub struct ScheduleResponse {
     pub events: Vec<MergedEventGroupWithSources>,
     pub local_activities: Vec<LocalActivityWithRecurrence>,
+    pub completions: Vec<ActivityCompletion>,
     pub start: DateTime<Utc>,
     pub end: DateTime<Utc>,
 }
@@ -55,9 +56,19 @@ impl ScheduleApi {
             .await
             .map_err(ApiError::from)?;
 
+        let completions = self.context.local_activity_repository()
+            .find_completions_in_range(
+                household_id,
+                start.0.date_naive(),
+                end.0.date_naive(),
+            )
+            .await
+            .map_err(ApiError::from)?;
+
         Ok(Json(ScheduleResponse {
             events,
             local_activities,
+            completions,
             start: start.0,
             end: end.0,
         }))

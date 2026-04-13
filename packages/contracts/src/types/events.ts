@@ -1,5 +1,5 @@
 import { UUID, Timestamps } from './common';
-import type { LocalActivity } from './activities';
+import type { ActivityCompletion, LocalActivity } from './activities';
 
 export type DedupeMode = 'show_all' | 'exact_only' | 'strong' | 'probable';
 
@@ -48,6 +48,7 @@ export interface MergedEventSource {
 export interface ScheduleResponse {
   events: MergedEventGroup[];
   localActivities: LocalActivity[];
+  completions: ActivityCompletion[];
   start: string;
   end: string;
 }

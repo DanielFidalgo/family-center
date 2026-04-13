@@ -2,6 +2,17 @@ import { UUID, Timestamps } from './common';
 
 export type RecurrenceFreq = 'daily' | 'weekly' | 'monthly' | 'yearly';
 
+export type ChoreCategory =
+  | 'cleaning'
+  | 'kitchen'
+  | 'laundry'
+  | 'hygiene'
+  | 'pets'
+  | 'homework'
+  | 'exercise'
+  | 'errands'
+  | 'other';
+
 export interface LocalActivity extends Timestamps {
   id: UUID;
   householdId: UUID;
@@ -12,6 +23,8 @@ export interface LocalActivity extends Timestamps {
   startAt?: string;         // ISO 8601; null for all-day or time-of-day
   endAt?: string;
   isAllDay: boolean;
+  category?: ChoreCategory;
+  isTimeBound: boolean;
   recurrenceRule?: LocalRecurrenceRule;
 }
 
@@ -26,6 +39,14 @@ export interface LocalRecurrenceRule {
   count?: number;
 }
 
+export interface ActivityCompletion {
+  id: UUID;
+  localActivityId: UUID;
+  completedDate: string;    // YYYY-MM-DD
+  completedBy?: UUID;
+  createdAt: string;
+}
+
 export interface CreateActivityRequest {
   personId?: UUID;
   title: string;
@@ -34,6 +55,8 @@ export interface CreateActivityRequest {
   startAt?: string;
   endAt?: string;
   isAllDay?: boolean;
+  category?: ChoreCategory;
+  isTimeBound?: boolean;
   recurrence?: {
     freq: RecurrenceFreq;
     interval?: number;
@@ -52,6 +75,8 @@ export interface UpdateActivityRequest {
   startAt?: string;
   endAt?: string;
   isAllDay?: boolean;
+  category?: ChoreCategory | null;
+  isTimeBound?: boolean;
   recurrence?: {
     freq: RecurrenceFreq;
     interval?: number;
@@ -60,4 +85,9 @@ export interface UpdateActivityRequest {
     until?: string;
     count?: number;
   } | null;
+}
+
+export interface CompleteActivityRequest {
+  date: string;             // YYYY-MM-DD
+  completedBy?: UUID;
 }

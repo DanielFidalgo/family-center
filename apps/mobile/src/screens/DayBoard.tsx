@@ -1,16 +1,13 @@
 import React, { useState, useCallback } from 'react';
 import {
-  IonPage, IonContent, IonHeader, IonToolbar, IonTitle,
+  IonPage, IonContent, IonHeader, IonToolbar,
   IonButton, IonIcon, IonSpinner,
 } from '@ionic/react';
 import { chevronBackOutline, chevronForwardOutline, refreshOutline, addOutline } from 'ionicons/icons';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import dayjs from 'dayjs';
 
-import { useSchedule } from '../api/hooks';
-import { usePeople } from '../api/hooks';
-import { useSettings } from '../api/hooks';
-import { useRunSync } from '../api/hooks';
+import { useSchedule, usePeople, useSettings, useRunSync } from '../api/hooks';
 import DayTimeline from '../components/schedule/DayTimeline';
 import type { MergedEventGroup, LocalActivity } from '@family-center/contracts';
 
@@ -20,7 +17,15 @@ function toIso(date: Date): string {
 
 const DayBoard: React.FC = () => {
   const history = useHistory();
-  const [date, setDate] = useState(() => {
+  const location = useLocation<{ date?: string }>();
+
+  const [date, setDate] = useState<Date>(() => {
+    // Allow week view to pass in a specific date
+    if (location.state?.date) {
+      const d = new Date(location.state.date);
+      d.setHours(0, 0, 0, 0);
+      return d;
+    }
     const d = new Date();
     d.setHours(0, 0, 0, 0);
     return d;
@@ -42,10 +47,16 @@ const DayBoard: React.FC = () => {
     });
   };
 
-  const isToday = () => {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    return date.getTime() === today.getTime();
+  const isToday = (() => {
+    const t = new Date();
+    t.setHours(0, 0, 0, 0);
+    return date.getTime() === t.getTime();
+  })();
+
+  const goToToday = () => {
+    const d = new Date();
+    d.setHours(0, 0, 0, 0);
+    setDate(d);
   };
 
   const handleEventClick = useCallback((event: MergedEventGroup) => {
@@ -53,12 +64,10 @@ const DayBoard: React.FC = () => {
   }, [history]);
 
   const handleActivityClick = useCallback((activity: LocalActivity) => {
-    history.push(`/activity/${activity.id}`);
-  }, [history]);
+    history.push(`/activity/${activity.id}`, { date: date.toISOString() });
+  }, [history, date]);
 
-  const dateLabel = isToday()
-    ? 'Today'
-    : dayjs(date).format('dddd, MMMM D');
+  const dateLabel = isToday ? 'Today' : dayjs(date).format('ddd, MMM D');
 
   return (
     <IonPage>
@@ -67,9 +76,38 @@ const DayBoard: React.FC = () => {
           <IonButton slot="start" fill="clear" onClick={() => navigate(-1)}>
             <IonIcon icon={chevronBackOutline} />
           </IonButton>
-          <IonTitle style={{ fontSize: '18px' }}>
-            {dateLabel}
-          </IonTitle>
+          <div
+            slot="start"
+            style={{ display: 'flex', flexDirection: 'column', paddingLeft: '4px' }}
+          >
+            <span style={{
+              fontFamily: 'var(--fc-font-display)',
+              fontSize: '17px',
+              fontWeight: 700,
+              color: isToday ? 'var(--fc-accent)' : 'var(--fc-text-primary)',
+              letterSpacing: '-0.01em',
+            }}>
+              {dateLabel}
+            </span>
+            {!isToday && (
+              <button
+                onClick={goToToday}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  color: 'var(--fc-accent)',
+                  fontSize: '11px',
+                  fontFamily: 'var(--fc-font-body)',
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  padding: 0,
+                  textAlign: 'left',
+                }}
+              >
+                Back to today
+              </button>
+            )}
+          </div>
           <IonButton slot="end" fill="clear" onClick={() => navigate(1)}>
             <IonIcon icon={chevronForwardOutline} />
           </IonButton>
@@ -79,20 +117,18 @@ const DayBoard: React.FC = () => {
             onClick={() => syncMutation.mutate({})}
             disabled={syncMutation.isPending}
           >
-            {syncMutation.isPending ? <IonSpinner name="crescent" /> : <IonIcon icon={refreshOutline} />}
+            {syncMutation.isPending
+              ? <IonSpinner name="crescent" style={{ width: 18, height: 18 }} />
+              : <IonIcon icon={refreshOutline} />}
           </IonButton>
-          <IonButton
-            slot="end"
-            fill="clear"
-            onClick={() => history.push('/activity/new')}
-          >
+          <IonButton slot="end" fill="clear" onClick={() => history.push('/activity/new')}>
             <IonIcon icon={addOutline} />
           </IonButton>
         </IonToolbar>
       </IonHeader>
-      <IonContent>
+      <IonContent scrollY={false}>
         {scheduleLoading ? (
-          <div style={{ display: 'flex', justifyContent: 'center', padding: '40px' }}>
+          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
             <IonSpinner />
           </div>
         ) : (
@@ -100,6 +136,7 @@ const DayBoard: React.FC = () => {
             people={people}
             events={schedule?.events ?? []}
             activities={schedule?.localActivities ?? []}
+            completions={schedule?.completions ?? []}
             date={date}
             settings={settings}
             onEventClick={handleEventClick}

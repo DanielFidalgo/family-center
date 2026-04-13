@@ -1,47 +1,164 @@
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap');
+
 :root {
+  /* Layout */
   --fc-lane-height: 80px;
-  --fc-header-height: 56px;
-  --fc-time-col-width: 60px;
-  --fc-shared-lane-color: #7B68EE;
+  --fc-header-height: 60px;
+  --fc-time-col-width: 56px;
+  --fc-tab-height: 64px;
+  --fc-lane-label-width: 100px;
+
+  /* Colors */
+  --fc-bg: #0F1117;
+  --fc-bg-surface: #171921;
+  --fc-bg-card: #1E2130;
+  --fc-bg-card-hover: #232638;
+  --fc-bg-elevated: #252839;
+
+  --fc-text-primary: #EEF0FA;
+  --fc-text-secondary: #7E82A0;
+  --fc-text-muted: #4A4E6A;
+
+  --fc-border: #262A3E;
+  --fc-border-strong: #343852;
+
+  --fc-accent: #F5A623;
+  --fc-accent-dim: rgba(245, 166, 35, 0.15);
+  --fc-blue: #5E81F4;
+  --fc-blue-dim: rgba(94, 129, 244, 0.15);
+  --fc-green: #4FCB8A;
+  --fc-green-dim: rgba(79, 203, 138, 0.12);
+
+  --fc-shared-lane-color: #8B78FF;
+
   --fc-event-border-radius: 6px;
-  --fc-event-padding: 4px 8px;
+  --fc-event-padding: 5px 8px;
   --fc-font-size-event: 13px;
-  --fc-font-size-time: 12px;
-  --fc-bg-dark: #1a1a2e;
-  --fc-bg-card: #16213e;
-  --fc-text-primary: #e0e0e0;
-  --fc-text-secondary: #a0a0b0;
-  --fc-border-color: #2a2a4a;
+  --fc-font-size-time: 11px;
+
+  /* Typography */
+  --fc-font-display: 'Syne', system-ui, sans-serif;
+  --fc-font-body: 'DM Sans', system-ui, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
 }
 
 body {
-  background: var(--fc-bg-dark);
+  background: var(--fc-bg);
   color: var(--fc-text-primary);
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  overflow: hidden; /* kiosk mode */
+  font-family: var(--fc-font-body);
+  font-size: 14px;
+  line-height: 1.5;
+  overflow: hidden;
   user-select: none;
   -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 ion-app {
-  background: var(--fc-bg-dark);
+  background: var(--fc-bg);
+  --ion-background-color: var(--fc-bg);
+  --ion-text-color: var(--fc-text-primary);
+  --ion-toolbar-background: var(--fc-bg-surface);
+  --ion-toolbar-color: var(--fc-text-primary);
+  --ion-tab-bar-background: var(--fc-bg-surface);
+  --ion-tab-bar-color: var(--fc-text-secondary);
+  --ion-tab-bar-color-selected: var(--fc-accent);
+  --ion-item-background: var(--fc-bg-surface);
+  --ion-border-color: var(--fc-border);
 }
 
-/* Touch target minimum size for wall display */
+ion-content {
+  --background: var(--fc-bg);
+}
+
+ion-toolbar {
+  --background: var(--fc-bg-surface);
+  --border-color: var(--fc-border);
+  --color: var(--fc-text-primary);
+}
+
+ion-header ion-toolbar:last-of-type {
+  --border-width: 0 0 1px 0;
+  --border-color: var(--fc-border);
+}
+
+ion-title {
+  font-family: var(--fc-font-display);
+  font-size: 17px;
+  letter-spacing: -0.01em;
+}
+
+ion-modal {
+  --background: var(--fc-bg-surface);
+  --ion-background-color: var(--fc-bg-surface);
+}
+
+ion-item {
+  --background: transparent;
+  --border-color: var(--fc-border);
+  --color: var(--fc-text-primary);
+  --detail-icon-color: var(--fc-text-muted);
+}
+
+ion-label {
+  color: var(--fc-text-primary) !important;
+  font-family: var(--fc-font-body);
+}
+
+ion-input, ion-textarea, ion-select {
+  --color: var(--fc-text-primary);
+  --placeholder-color: var(--fc-text-muted);
+  font-family: var(--fc-font-body);
+}
+
+ion-button {
+  font-family: var(--fc-font-body);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+/* Touch targets */
 .touch-target {
   min-height: 44px;
   min-width: 44px;
 }
 
-/* Kiosk-friendly scrollbar */
+/* Kiosk scrollbar */
 ::-webkit-scrollbar {
-  width: 4px;
-  height: 4px;
+  width: 3px;
+  height: 3px;
 }
 ::-webkit-scrollbar-track {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: var(--fc-border-color);
+  background: var(--fc-border-strong);
   border-radius: 2px;
+}
+
+/* Custom tab bar anchoring */
+.fc-tabbar {
+  position: fixed !important;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 200;
+}
+
+ion-content {
+  --padding-bottom: var(--fc-tab-height, 64px);
+}
+
+/* Shared animation keyframes */
+@keyframes fc-fade-up {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fc-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
 }
