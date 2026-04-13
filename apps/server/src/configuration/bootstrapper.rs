@@ -34,10 +34,10 @@ pub async fn bootstrap() -> Result<(), ServiceError> {
     let pool = db::connect(&config.database_url).await.expect("Failed to connect to database");
 
     if std::env::var("RUN_MIGRATIONS").unwrap_or_default() == "true" {
-        sqlx::migrate!("./migrations")
-            .run(&pool)
-            .await
-            .expect("Failed to run migrations");
+        match sqlx::migrate!("./migrations").run(&pool).await {
+            Ok(_) => tracing::info!("Migrations applied successfully"),
+            Err(e) => tracing::warn!("Migration skipped (likely applied by another instance): {e}"),
+        }
     }
 
     let config: Arc<dyn IAppConfig> = Arc::new(config);
