@@ -60,6 +60,17 @@ oauth2 = "4"
 # URL parsing
 url = "2"
 
+# S3-compatible storage (Leapcell)
+aws-sdk-s3 = "1"
+aws-config = "1"
+aws-types = "1"
+
+# Hex encoding for token generation
+hex = "0.4"
+
+# Random bytes
+rand = "0.8"
+
 # Async trait
 async-trait = "0.1"
 

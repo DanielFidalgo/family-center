@@ -3,6 +3,7 @@ use std::sync::Arc;
 use crate::configuration::config::IAppConfig;
 use crate::domain::repositories::{
     calendar_source_repository::ICalendarSourceRepository,
+    claim_token_repository::IClaimTokenRepository,
     google_account_repository::IGoogleAccountRepository,
     household_repository::IHouseholdRepository,
     lane_rule_repository::ILaneRuleRepository,
@@ -25,6 +26,7 @@ pub trait IAppContext: Send + Sync {
     fn local_activity_repository(&self) -> &dyn ILocalActivityRepository;
     fn settings_repository(&self) -> &dyn ISettingsRepository;
     fn lane_rule_repository(&self) -> &dyn ILaneRuleRepository;
+    fn claim_token_repository(&self) -> &dyn IClaimTokenRepository;
     fn sync_service(&self) -> &dyn ISyncService;
 }
 
@@ -39,6 +41,7 @@ pub struct AppContext {
     pub local_activity_repository: Arc<dyn ILocalActivityRepository>,
     pub settings_repository: Arc<dyn ISettingsRepository>,
     pub lane_rule_repository: Arc<dyn ILaneRuleRepository>,
+    pub claim_token_repository: Arc<dyn IClaimTokenRepository>,
     pub sync_service: Arc<dyn ISyncService>,
 }
 
@@ -53,5 +56,6 @@ impl IAppContext for AppContext {
     fn local_activity_repository(&self) -> &dyn ILocalActivityRepository { self.local_activity_repository.as_ref() }
     fn settings_repository(&self) -> &dyn ISettingsRepository { self.settings_repository.as_ref() }
     fn lane_rule_repository(&self) -> &dyn ILaneRuleRepository { self.lane_rule_repository.as_ref() }
+    fn claim_token_repository(&self) -> &dyn IClaimTokenRepository { self.claim_token_repository.as_ref() }
     fn sync_service(&self) -> &dyn ISyncService { self.sync_service.as_ref() }
 }

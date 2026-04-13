@@ -8,6 +8,7 @@ use crate::configuration::service_setup::{
 use crate::infrastructure::db;
 use crate::infrastructure::repositories::{
     calendar_source_repository::CalendarSourceRepository,
+    claim_token_repository::ClaimTokenRepository,
     google_account_repository::GoogleAccountRepository,
     household_repository::HouseholdRepository,
     lane_rule_repository::LaneRuleRepository,
@@ -51,6 +52,7 @@ pub async fn bootstrap() -> Result<(), ServiceError> {
     let local_activity_repo = Arc::new(LocalActivityRepository::new(pool.clone()));
     let settings_repo = Arc::new(SettingsRepository::new(pool.clone()));
     let lane_rule_repo = Arc::new(LaneRuleRepository::new(pool.clone()));
+    let claim_token_repo = Arc::new(ClaimTokenRepository::new(pool.clone()));
 
     // Create sync service
     let sync_service = Arc::new(SyncService::new(
@@ -74,6 +76,7 @@ pub async fn bootstrap() -> Result<(), ServiceError> {
         local_activity_repository: local_activity_repo,
         settings_repository: settings_repo,
         lane_rule_repository: lane_rule_repo,
+        claim_token_repository: claim_token_repo,
         sync_service,
     });
 

@@ -7,3 +7,4 @@ pub mod merged_event_repository;
 pub mod person_repository;
 pub mod settings_repository;
 pub mod source_event_repository;
+pub mod claim_token_repository;

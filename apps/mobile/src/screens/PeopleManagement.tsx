@@ -3,9 +3,11 @@ import {
   IonPage, IonContent, IonHeader, IonToolbar, IonTitle,
   IonSpinner, IonModal,
 } from '@ionic/react';
+import { QRCodeSVG } from 'qrcode.react';
 import {
   usePeople, useCreatePerson, useUpdatePerson,
   useGoogleAccounts, useLaneRules, useLinkAccount, useUnlinkAccount,
+  useCreateClaimToken,
 } from '../api/hooks';
 import Avatar from '../components/Avatar';
 import type { Person, GoogleAccountPublic, LaneAssignmentRule } from '@family-center/contracts';
@@ -143,11 +145,16 @@ const PeopleManagement: React.FC = () => {
   const linkMutation = useLinkAccount();
   const unlinkMutation = useUnlinkAccount();
 
+  const claimTokenMutation = useCreateClaimToken();
+
   const [showModal, setShowModal] = useState(false);
   const [editing, setEditing] = useState<Person | null>(null);
   const [name, setName] = useState('');
   const [color, setColor] = useState(COLORS[0]);
   const [avatarUrl, setAvatarUrl] = useState('');
+  const [qrPerson, setQrPerson] = useState<Person | null>(null);
+  const [qrUrl, setQrUrl] = useState('');
+  const [qrExpiry, setQrExpiry] = useState('');
 
   const openCreate = () => {
     setEditing(null);
@@ -181,6 +188,17 @@ const PeopleManagement: React.FC = () => {
 
   const handleUnlink = (personId: string | null, googleAccountId: string) => {
     unlinkMutation.mutate({ googleAccountId, personId: personId ?? undefined });
+  };
+
+  const openQr = async (person: Person) => {
+    try {
+      const result = await claimTokenMutation.mutateAsync(person.id);
+      setQrPerson(person);
+      setQrUrl(result.claimUrl);
+      setQrExpiry(new Date(result.expiresAt).toLocaleTimeString());
+    } catch (e) {
+      console.error('Failed to generate QR code', e);
+    }
   };
 
   const isBusy = createMutation.isPending || updateMutation.isPending;
@@ -248,6 +266,32 @@ const PeopleManagement: React.FC = () => {
                           : 'No Gmail linked'}
                       </div>
                     </div>
+                    <button
+                      style={{
+                        background: 'none',
+                        border: '1px solid var(--fc-border)',
+                        borderRadius: '8px',
+                        padding: '6px 8px',
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        marginRight: '4px',
+                      }}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        openQr(person);
+                      }}
+                    >
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--fc-text-muted)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <rect x="2" y="2" width="8" height="8" rx="1"/>
+                        <rect x="14" y="2" width="8" height="8" rx="1"/>
+                        <rect x="2" y="14" width="8" height="8" rx="1"/>
+                        <rect x="14" y="14" width="4" height="4"/>
+                        <line x1="22" y1="14" x2="22" y2="14.01"/>
+                        <line x1="22" y1="22" x2="22" y2="22.01"/>
+                        <line x1="18" y1="18" x2="18" y2="18.01"/>
+                      </svg>
+                    </button>
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--fc-text-muted)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                       <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
                       <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
@@ -339,6 +383,25 @@ const PeopleManagement: React.FC = () => {
                 </span>
               </div>
 
+              {/* Gmail linking */}
+              <div style={s.field}>
+                <label style={s.fieldLabel}>Google account</label>
+                {editing ? (
+                  <GmailPicker
+                    personId={editing.id}
+                    accounts={accounts}
+                    rules={rules}
+                    onLink={(gid) => handleLink(editing.id, gid)}
+                    onUnlink={(gid) => handleUnlink(editing.id, gid)}
+                    isLinking={isLinking}
+                  />
+                ) : (
+                  <span style={{ fontSize: '12px', color: 'var(--fc-text-muted)' }}>
+                    Save the person first, then link a Google account.
+                  </span>
+                )}
+              </div>
+
               {/* Preview */}
               {name.trim() && (
                 <div style={{ ...s.previewCard, borderLeft: `4px solid ${color}` }}>
@@ -360,6 +423,70 @@ const PeopleManagement: React.FC = () => {
                   ? <IonSpinner name="crescent" style={{ width: 18, height: 18, color: '#000' }} />
                   : editing ? 'Save changes' : 'Add person'
                 }
+              </button>
+            </div>
+          </IonContent>
+        </IonModal>
+
+        {/* ── QR Code modal ── */}
+        <IonModal isOpen={!!qrPerson} onDidDismiss={() => setQrPerson(null)}>
+          <IonHeader>
+            <IonToolbar>
+              <IonTitle style={{ fontFamily: 'var(--fc-font-display)' }}>
+                QR Code
+              </IonTitle>
+              <button slot="end" style={s.modalCancel} onClick={() => setQrPerson(null)}>
+                Close
+              </button>
+            </IonToolbar>
+          </IonHeader>
+          <IonContent>
+            <div style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              padding: '32px 24px',
+              gap: '20px',
+              textAlign: 'center',
+            }}>
+              <div style={{
+                fontFamily: 'var(--fc-font-display)',
+                fontSize: '18px',
+                fontWeight: 700,
+                color: 'var(--fc-text-primary)',
+              }}>
+                Set up {qrPerson?.name}'s profile
+              </div>
+              <div style={{
+                background: '#fff',
+                padding: '20px',
+                borderRadius: '16px',
+              }}>
+                {qrUrl && <QRCodeSVG value={qrUrl} size={220} />}
+              </div>
+              <div style={{
+                fontSize: '13px',
+                color: 'var(--fc-text-secondary)',
+                lineHeight: '1.5',
+              }}>
+                Scan this QR code with {qrPerson?.name}'s phone to set up their
+                photo and Google account.
+                <br />
+                <span style={{ fontSize: '11px', color: 'var(--fc-text-muted)' }}>
+                  Expires at {qrExpiry}
+                </span>
+              </div>
+              <button
+                style={{
+                  ...s.addBtn,
+                  marginTop: '8px',
+                  borderStyle: 'solid',
+                  maxWidth: '240px',
+                }}
+                onClick={() => qrPerson && openQr(qrPerson)}
+                disabled={claimTokenMutation.isPending}
+              >
+                {claimTokenMutation.isPending ? 'Generating...' : 'Regenerate QR'}
               </button>
             </div>
           </IonContent>

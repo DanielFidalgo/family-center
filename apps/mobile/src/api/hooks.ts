@@ -155,6 +155,14 @@ export function useUncompleteActivity() {
   });
 }
 
+// ---- Claim Tokens ----
+export function useCreateClaimToken() {
+  return useMutation({
+    mutationFn: (personId: string) =>
+      api.post<{ token: string; expiresAt: string; claimUrl: string }>(`/people/${personId}/claim-token`, {}),
+  });
+}
+
 // ---- Lane Assignment Rules ----
 export const LANE_RULES_KEY = ['lane-rules'] as const;
 

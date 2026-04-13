@@ -23,6 +23,8 @@ pub enum ApiTags {
     Settings,
     /// Lane assignment rules
     Lanes,
+    /// Person claim (self-service profile setup)
+    Claim,
 }
 use serde::{Deserialize, Serialize};
 
@@ -53,6 +55,9 @@ pub enum ApiError {
     /// 500 Internal Server Error
     #[oai(status = 500)]
     Internal(Json<ErrorBody>),
+    /// 410 Gone
+    #[oai(status = 410)]
+    Gone(Json<ErrorBody>),
 }
 
 impl ApiError {
@@ -80,6 +85,13 @@ impl ApiError {
     pub fn internal(msg: impl Into<String>) -> Self {
         ApiError::Internal(Json(ErrorBody {
             code: "INTERNAL_ERROR".to_string(),
+            message: msg.into(),
+        }))
+    }
+
+    pub fn gone(msg: impl Into<String>) -> Self {
+        ApiError::Gone(Json(ErrorBody {
+            code: "GONE".to_string(),
             message: msg.into(),
         }))
     }

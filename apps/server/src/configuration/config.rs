@@ -9,6 +9,12 @@ pub trait IAppConfig: Send + Sync {
     fn google_client_secret(&self) -> &str;
     fn google_redirect_uri(&self) -> &str;
     fn mock_calendar(&self) -> bool;
+    fn s3_endpoint(&self) -> &str;
+    fn s3_bucket(&self) -> &str;
+    fn s3_access_key(&self) -> &str;
+    fn s3_secret_key(&self) -> &str;
+    fn s3_region(&self) -> &str;
+    fn public_url(&self) -> &str;
 }
 
 #[derive(Clone, Debug)]
@@ -21,6 +27,12 @@ pub struct Config {
     pub google_client_secret: String,
     pub google_redirect_uri: String,
     pub mock_calendar: bool,
+    pub s3_endpoint: String,
+    pub s3_bucket: String,
+    pub s3_access_key: String,
+    pub s3_secret_key: String,
+    pub s3_region: String,
+    pub public_url: String,
 }
 
 impl Config {
@@ -41,6 +53,12 @@ impl Config {
             mock_calendar: std::env::var("MOCK_CALENDAR")
                 .map(|v| v == "true" || v == "1")
                 .unwrap_or(true),
+            s3_endpoint: std::env::var("S3_ENDPOINT").unwrap_or_default(),
+            s3_bucket: std::env::var("S3_BUCKET").unwrap_or_else(|_| "family-center".to_string()),
+            s3_access_key: std::env::var("S3_ACCESS_KEY").unwrap_or_default(),
+            s3_secret_key: std::env::var("S3_SECRET_KEY").unwrap_or_default(),
+            s3_region: std::env::var("S3_REGION").unwrap_or_else(|_| "auto".to_string()),
+            public_url: std::env::var("PUBLIC_URL").unwrap_or_else(|_| "http://localhost:8080".to_string()),
         })
     }
 }
@@ -70,4 +88,10 @@ impl IAppConfig for Config {
     fn mock_calendar(&self) -> bool {
         self.mock_calendar
     }
+    fn s3_endpoint(&self) -> &str { &self.s3_endpoint }
+    fn s3_bucket(&self) -> &str { &self.s3_bucket }
+    fn s3_access_key(&self) -> &str { &self.s3_access_key }
+    fn s3_secret_key(&self) -> &str { &self.s3_secret_key }
+    fn s3_region(&self) -> &str { &self.s3_region }
+    fn public_url(&self) -> &str { &self.public_url }
 }

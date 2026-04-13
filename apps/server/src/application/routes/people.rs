@@ -82,4 +82,25 @@ impl PeopleApi {
 
         Ok(Json(person))
     }
+
+    /// Generate a one-time claim token for a person (for self-service profile setup).
+    #[oai(path = "/people/:id/claim-token", method = "post")]
+    pub async fn create_claim_token(
+        &self,
+        auth: BearerAuth,
+        id: Path<Uuid>,
+    ) -> Result<Json<crate::domain::entities::claim_token::ClaimTokenResponse>, ApiError> {
+        self.verify(&auth)?;
+        let _person = self.context.person_repository().find_by_id(id.0)
+            .await.map_err(ApiError::from)?
+            .ok_or_else(|| ApiError::not_found(format!("Person {} not found", id.0)))?;
+        let claim = self.context.claim_token_repository().generate(id.0)
+            .await.map_err(ApiError::from)?;
+        let claim_url = format!("{}/claim/{}", self.context.config().public_url(), claim.token);
+        Ok(Json(crate::domain::entities::claim_token::ClaimTokenResponse {
+            token: claim.token,
+            expires_at: claim.expires_at,
+            claim_url,
+        }))
+    }
 }

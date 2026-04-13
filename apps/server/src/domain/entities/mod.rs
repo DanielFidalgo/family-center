@@ -8,3 +8,4 @@ pub mod local_activity;
 pub mod settings;
 pub mod sync;
 pub mod lane;
+pub mod claim_token;
