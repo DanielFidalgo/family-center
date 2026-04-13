@@ -108,6 +108,49 @@ const DayTimeline: React.FC<Props> = ({
         ))}
       </div>
 
+      {/* Unscheduled chores tray */}
+      {(() => {
+        const hasUnscheduled = lanes.some(({ person }) => {
+          const pid = person?.id ?? null;
+          return activitiesForPerson(pid).some((a) => !a.startAt);
+        });
+        if (!hasUnscheduled) return null;
+        return (
+          <div className="day-timeline__unscheduled">
+            <div className="day-timeline__unscheduled-gutter">Anytime</div>
+            {lanes.map(({ person, color }) => {
+              const pid = person?.id ?? null;
+              const unscheduled = activitiesForPerson(pid).filter((a) => !a.startAt);
+              return (
+                <div key={pid ?? 'shared'} className="day-timeline__unscheduled-lane">
+                  {unscheduled.map((act) => {
+                    const done = isActivityDone(act.id);
+                    return (
+                      <div
+                        key={act.id}
+                        className={`day-timeline__event day-timeline__event--activity${done ? ' day-timeline__event--done' : ''}`}
+                        role={onActivityClick ? 'button' : undefined}
+                        style={{
+                          position: 'relative',
+                          borderLeft: `3px solid ${act.color ?? color}`,
+                        }}
+                        onClick={onActivityClick ? () => onActivityClick(act) : undefined}
+                      >
+                        <div className={`day-timeline__event-title${done ? ' day-timeline__event-title--done' : ''}`}>{act.title}</div>
+                        {done
+                          ? <span className="day-timeline__event-done-label">DONE</span>
+                          : <span className="day-timeline__event-badge">✓</span>
+                        }
+                      </div>
+                    );
+                  })}
+                </div>
+              );
+            })}
+          </div>
+        );
+      })()}
+
       {/* Scrollable time grid */}
       <div className="day-timeline__scroll" ref={scrollRef}>
         <div className="day-timeline__grid" style={{ height: `${HOUR_HEIGHT * 24}px` }}>
@@ -173,7 +216,7 @@ const DayTimeline: React.FC<Props> = ({
                   );
                 })}
 
-                {/* Local activities */}
+                {/* Scheduled local activities */}
                 {laneActivities.filter((a) => a.startAt).map((act) => {
                   const pos = eventPosition(act.startAt!, act.endAt ?? act.startAt!, date);
                   if (!pos) return null;

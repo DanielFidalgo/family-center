@@ -75,11 +75,11 @@
 }
 
 .wsw__row--today {
-  background: rgba(245, 166, 35, 0.04);
+  background: rgba(255, 140, 66, 0.08);
 }
 
 .wsw__row--weekend {
-  background: rgba(255, 255, 255, 0.015);
+  background: rgba(168, 85, 247, 0.04);
 }
 
 /* ─── Day label column ─── */
@@ -103,7 +103,7 @@
 }
 
 .wsw__day-label:active {
-  background: rgba(255,255,255,0.04);
+  background: rgba(45, 27, 78, 0.04);
 }
 
 .wsw__day-label--today::after {
@@ -140,6 +140,7 @@
 
 .wsw__day-num--today {
   color: var(--fc-accent);
+  text-shadow: none;
 }
 
 /* ─── Lane cell ─── */
@@ -165,43 +166,45 @@
 .wsw__chip {
   display: flex;
   align-items: baseline;
-  gap: 4px;
+  gap: 5px;
   background: var(--fc-bg-card);
   border: none;
-  border-left: 3px solid var(--lane-color, var(--fc-blue));
-  border-radius: 4px;
-  padding: 4px 6px;
+  border-left: 4px solid var(--lane-color, var(--fc-blue));
+  border-radius: 8px;
+  padding: 5px 8px;
   cursor: pointer;
   text-align: left;
   width: 100%;
-  min-height: 28px;
+  min-height: 32px;
   outline: none;
   -webkit-tap-highlight-color: transparent;
-  transition: background 0.12s, transform 0.1s;
-  animation: fc-fade-up 0.2s ease both;
+  transition: background 0.15s, transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
+  animation: fc-fade-up 0.25s ease both;
 }
 
 .wsw__chip:active {
   background: var(--fc-bg-elevated);
-  transform: scale(0.98);
+  transform: scale(0.93);
 }
 
 .wsw__chip--activity {
   background: var(--fc-bg-elevated);
+  border-left-style: dashed;
 }
 
 .wsw__chip-time {
   font-family: var(--fc-font-body);
-  font-size: 10px;
+  font-size: 11px;
   color: var(--fc-text-muted);
   flex-shrink: 0;
   white-space: nowrap;
+  font-weight: 600;
 }
 
 .wsw__chip-title {
   font-family: var(--fc-font-body);
-  font-size: 12px;
-  font-weight: 500;
+  font-size: 13px;
+  font-weight: 600;
   color: var(--fc-text-primary);
   overflow: hidden;
   text-overflow: ellipsis;
@@ -211,14 +214,16 @@
 }
 
 .wsw__chip-badge {
-  font-size: 10px;
+  font-size: 11px;
   color: var(--fc-green);
   flex-shrink: 0;
+  font-weight: 700;
 }
 
 .wsw__chip--done {
-  opacity: 0.65;
-  background: var(--fc-green-dim, #d4f5e2);
+  opacity: 0.7;
+  background: var(--fc-green-dim);
+  border-left-color: var(--fc-green);
 }
 
 .wsw__chip-title--done {
@@ -227,10 +232,10 @@
 }
 
 .wsw__chip-done-label {
-  font-size: 9px;
+  font-size: 10px;
   font-weight: 800;
   letter-spacing: 0.06em;
-  color: var(--fc-green, #22c55e);
+  color: var(--fc-green);
   flex-shrink: 0;
   text-transform: uppercase;
 }

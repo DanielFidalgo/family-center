@@ -2,30 +2,31 @@
   display: flex;
   flex-direction: column;
   border-bottom: 1px solid var(--fc-border);
-  animation: fc-fade-up 0.2s ease both;
+  animation: fc-fade-up 0.25s ease both;
 }
 
 .person-lane__header {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 8px 12px;
+  gap: 10px;
+  padding: 10px 14px;
   background: var(--fc-bg-surface);
   border-bottom: 1px solid var(--fc-border);
-  min-height: 40px;
+  min-height: 44px;
   flex-shrink: 0;
 }
 
 .person-lane__dot {
-  width: 8px;
-  height: 8px;
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
   flex-shrink: 0;
+  box-shadow: 0 0 8px currentColor;
 }
 
 .person-lane__name {
   font-family: var(--fc-font-display);
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 700;
   color: var(--fc-text-primary);
   flex: 1;
@@ -34,26 +35,26 @@
 
 .person-lane__count {
   font-family: var(--fc-font-body);
-  font-size: 11px;
-  color: var(--fc-text-muted);
+  font-size: 12px;
+  color: var(--fc-text-secondary);
   background: var(--fc-bg-card);
-  border-radius: 10px;
-  padding: 1px 7px;
-  font-weight: 500;
+  border-radius: 12px;
+  padding: 2px 9px;
+  font-weight: 700;
 }
 
 .person-lane__events {
   display: flex;
   flex-direction: column;
-  gap: 2px;
-  padding: 4px 8px 6px;
+  gap: 3px;
+  padding: 6px 10px 8px;
   background: var(--fc-bg);
 }
 
 .person-lane__empty {
   font-family: var(--fc-font-body);
-  font-size: 12px;
+  font-size: 13px;
   color: var(--fc-text-muted);
-  padding: 10px 4px;
+  padding: 12px 4px;
   font-style: italic;
 }

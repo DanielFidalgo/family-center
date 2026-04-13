@@ -76,10 +76,10 @@ const WeekBoard: React.FC<Props> = ({
     });
 
     const dayActivities = activities.filter((a) => {
-      if (!a.startAt) return false;
+      if (laneId ? a.personId !== laneId : !!a.personId) return false;
+      if (!a.startAt) return true; // unscheduled chores show every day
       const t = new Date(a.startAt).getTime();
-      return t >= start.getTime() && t <= end.getTime() &&
-        (laneId ? a.personId === laneId : !a.personId);
+      return t >= start.getTime() && t <= end.getTime();
     });
 
     // Apply dedupe filtering
